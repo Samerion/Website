@@ -81,28 +81,29 @@ picture, source, header a {
 }
 
 .layout-general header {
-    
+
     padding: 0 10px;
-    
+
 }
 
 .layout-general nav {
-    
+
     text-align: start
-    
+
 }
 
 .layout-general header img {
-    
+
     height: 50px;
     margin: 0 10px;
-    
+
 }
 
 main {
 
-    width: 800px;
+    max-width: 800px;
     margin: 30px auto;
+    padding: 10px;
 
 }
 

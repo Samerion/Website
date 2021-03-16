@@ -13,17 +13,22 @@ import samerion.website.utils;
 immutable blogPosts = [
 
     BlogPost(
-        "2020-11-07-mirrors", "pages/blog/2020-11-07-mirrors.md",
-        "2020-11-07", "World Mirrors — Parallel worlds in Samerion",
+        "2021-03-16-combat", "pages/blog/2021-03-16-combat.md",
+        "2021-03-16", "Combat",
+    ),
+    BlogPost(
+        "2021-03-04-monetization", "pages/blog/2021-03-04-monetization.md",
+        "2021-03-04", "Monetization of Samerion",
     ),
     BlogPost(
         "2021-01-13-dialogue", "pages/blog/2021-01-13-dialogue.md",
         "2021-01-13", "Role-play: The dialogue system",
     ),
     BlogPost(
-        "2021-03-04-monetization", "pages/blog/2021-03-04-monetization.md",
-        "2021-03-04", "Monetization of Samerion",
+        "2020-11-07-mirrors", "pages/blog/2020-11-07-mirrors.md",
+        "2020-11-07", "World Mirrors — Parallel worlds in Samerion",
     ),
+
 
 ];
 
