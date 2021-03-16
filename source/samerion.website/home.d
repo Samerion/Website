@@ -1,7 +1,7 @@
 /// Home for the website.
 ///
 /// License:
-///     Unlike other source files in the repository, this file is licensed under CC BY-SA 3.0. See license-content.txt
+///     Unlike other source files in the repository, this file is licensed under CC BY-SA 3.0. See license-content.txt.
 module samerion.website.home;
 
 import std.string;

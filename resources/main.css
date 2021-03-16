@@ -69,13 +69,34 @@ header a {
     text-decoration: none;
     font-size: 1.4em;
     margin: 5px;
+    vertical-align: middle;
 
 }
+
 
 picture, source, header a {
 
     display: inline-block;
 
+}
+
+.layout-general header {
+    
+    padding: 0 10px;
+    
+}
+
+.layout-general nav {
+    
+    text-align: start
+    
+}
+
+.layout-general header img {
+    
+    height: 50px;
+    margin: 0 10px;
+    
 }
 
 main {
