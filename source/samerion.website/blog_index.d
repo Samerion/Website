@@ -13,8 +13,12 @@ import samerion.website.utils;
 immutable blogPosts = [
 
     BlogPost(
+        "2021-03-24-combat-stats", "pages/blog/2021-03-24-combat-stats.md",
+        "2021-03-24", "Combat, pt. 2: stats and actions",
+    ),
+    BlogPost(
         "2021-03-16-combat", "pages/blog/2021-03-16-combat.md",
-        "2021-03-16", "Combat",
+        "2021-03-16", "Combat, pt. 1: turns and queues",
     ),
     BlogPost(
         "2021-03-04-monetization", "pages/blog/2021-03-04-monetization.md",
