@@ -12,6 +12,11 @@ import samerion.website.utils;
 
 immutable blogPosts = [
 
+    // I should make a function for generating those
+    BlogPost(
+        "2021-04-14-map", "pages/blog/2021-04-14-map.md",
+        "2021-04-14", "The continent of Neasdal: Countries in Samerion",
+    ),
     BlogPost(
         "2021-04-09-races", "pages/blog/2021-04-09-races.md",
         "2021-04-09", "Races of Armitris",
@@ -48,7 +53,7 @@ struct BlogPost {
     /// File the post's content is located in.
     string file;
 
-    /// Publication date in ISO8601.
+    /// Publication date in ISO 8601.
     string publicationDate;
 
     /// Title of the post.
