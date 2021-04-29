@@ -12,36 +12,13 @@ import samerion.website.utils;
 
 immutable blogPosts = [
 
-    // I should make a function for generating those
-    BlogPost(
-        "2021-04-14-map", "pages/blog/2021-04-14-map.md",
-        "2021-04-14", "The continent of Neasdal: Countries in Samerion",
-    ),
-    BlogPost(
-        "2021-04-09-races", "pages/blog/2021-04-09-races.md",
-        "2021-04-09", "Races of Armitris",
-    ),
-    BlogPost(
-        "2021-03-24-combat-stats", "pages/blog/2021-03-24-combat-stats.md",
-        "2021-03-24", "Combat, pt. 2: stats and actions",
-    ),
-    BlogPost(
-        "2021-03-16-combat", "pages/blog/2021-03-16-combat.md",
-        "2021-03-16", "Combat, pt. 1: turns and queues",
-    ),
-    BlogPost(
-        "2021-03-04-monetization", "pages/blog/2021-03-04-monetization.md",
-        "2021-03-04", "Monetization of Samerion",
-    ),
-    BlogPost(
-        "2021-01-13-dialogue", "pages/blog/2021-01-13-dialogue.md",
-        "2021-01-13", "Role-play: The dialogue system",
-    ),
-    BlogPost(
-        "2020-11-07-mirrors", "pages/blog/2020-11-07-mirrors.md",
-        "2020-11-07", "World Mirrors — Parallel worlds in Samerion",
-    ),
-
+    BlogPost.make("2021-04-14", "map", "The continent of Neasdal: Countries in Samerion"),
+    BlogPost.make("2021-04-09", "races", "Races of Armitris"),
+    BlogPost.make("2021-03-24", "combat-stats", "Combat, pt. 2: stats and actions"),
+    BlogPost.make("2021-03-16", "combat", "Combat, pt. 1: turns and queues"),
+    BlogPost.make("2021-03-04", "monetization", "Monetization of Samerion"),
+    BlogPost.make("2021-01-13", "dialogue", "Role-play: The dialogue system"),
+    BlogPost.make("2020-11-07", "mirrors", "World Mirrors — Parallel worlds in Samerion"),
 
 ];
 
@@ -58,6 +35,17 @@ struct BlogPost {
 
     /// Title of the post.
     string title;
+
+    /// Make a new blog post
+    static BlogPost make(string date, string id, string title) {
+
+        const fullID = format!"%s-%s"(date, id);
+        return BlogPost(
+            fullID, fullID.format!"pages/blog/%s.md",
+            date, title,
+        );
+
+    }
 
     /// Get a blog list entry for this post.
     Element entry() const {
