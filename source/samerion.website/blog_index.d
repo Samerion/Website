@@ -12,6 +12,7 @@ import samerion.website.utils;
 
 immutable blogPosts = [
 
+    BlogPost.make("2021-04-29", "dev-lang", "Programming: History of languages used for Samerion"),
     BlogPost.make("2021-04-14", "map", "The continent of Neasdal: Countries in Samerion"),
     BlogPost.make("2021-04-09", "races", "Races of Armitris"),
     BlogPost.make("2021-03-24", "combat-stats", "Combat, pt. 2: stats and actions"),
