@@ -26,14 +26,15 @@ Page home = {
         ),
 
         section(
-            "Make your own...",
+            "An open world for you to explore",
             longLine(
-                "Character, story, potions, items, more! From the basics to the details, Samerion gives you lots of",
-                "different small choices, making every single game unique."
+                "Samerion happens in world where you're free to go wherever you want to. It's planned to be big and to",
+                "grow constantly with each update."
             ),
 
-            link("Blog: character dialogue", "/blog/2021-01-13-dialogue"),
-            elem!("p", q{ class="hint" })("More to come...")
+            link("Blog: The continent of Neasdal", "/blog/2021-04-14-map"),
+            link("Blog: Races of Armitris", "/blog/2021-04-09-races"),
+            elem!("p", q{ class="hint" })("More to come..."),
         ),
 
         section(
@@ -42,6 +43,17 @@ Page home = {
                 "Here, you don't have to wait for other players to make a move. Turns consist of small, quick",
                 "actions, forcing you to think quickly and plan your next moves before your turn."
             ),
+            link("Blog: Combat", "/blog/2021-03-16-combat"),
+        ),
+
+        section(
+            "Make your own...",
+            longLine(
+                "Character, story, potions, items, more! From the basics to the details, Samerion gives you lots of",
+                "different small choices, making every single game unique."
+            ),
+
+            link("Blog: Character dialogue", "/blog/2021-01-13-dialogue"),
         ),
 
         section(
