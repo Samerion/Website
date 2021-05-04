@@ -9,7 +9,7 @@ import samerion.website.utils;
 enum Layout {
 
     presentation,
-    general
+    general,
 
 }
 

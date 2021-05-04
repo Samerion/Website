@@ -30,10 +30,15 @@ img {
 
 }
 
-h1, h2, h3, header a {
+h1, h2, h3, header a, input[type="submit"] {
 
     font-family: almendra, ibm-plex-serif, serif, monospace, sans-serif;
     font-weight: bold;
+
+}
+
+h1, h2, h3, header a {
+
     color: #c00;
 
 }
@@ -104,6 +109,34 @@ main {
     max-width: 800px;
     margin: 30px auto;
     padding: 10px;
+
+}
+
+form {
+
+    max-width: 400px;
+    margin: 0 auto;
+
+}
+
+input {
+
+    display: block;
+    box-sizing: border-box;
+
+    width: 100%;
+    padding: 5px 10px;
+    border: 0;
+    border-radius: 0;
+    margin: 10px 0;
+
+    background: #eee;
+
+}
+
+input[type="submit"] {
+
+    background: #ccc;
 
 }
 
