@@ -3,7 +3,6 @@ module samerion.website.router;
 import elemi;
 import lighttp;
 
-import std.uri;
 import std.exception;
 import std.algorithm;
 
@@ -11,6 +10,7 @@ import passwd;
 import passwd.bcrypt;
 
 import samerion.website.html;
+import samerion.website.utils;
 import samerion.website.database;
 import samerion.website.exception;
 
@@ -24,12 +24,25 @@ final class Router {
         // Not logged in, open login
         if (user.isNull) getLogin(response);
 
-        else response.body = user;
+        // Logged in, view account page
+        else accountPage(user.get, response);
+
+    }
+
+    void accountPage(User user, ServerResponse response) {
+
+        response.body = user;
 
     }
 
     @Get("login")
     void getLogin(ServerResponse response) {
+
+        getLoginImpl(response);
+
+    }
+
+    void getLoginImpl(ServerResponse response, string mistakesWereMade = "") {
 
         Page page = {
 
@@ -46,6 +59,8 @@ final class Router {
                         "register…"
                     )
                 ),
+
+                elem!("p", q{ class="error" })(mistakesWereMade),
 
                 elem!"label"(
                     "Nickname",
@@ -130,6 +145,48 @@ final class Router {
 
     }
 
+    @Post("login") @Post("account")
+    void postLogin(ServerRequest request, ServerResponse response) {
+
+        string nickname, password;
+
+        // Assemble the data
+        foreach (argument; request.body.splitter("&")) {
+
+            // Get the pair
+            const pair = queryPair(argument);
+
+            switch (pair[0]) {
+
+                case "nickname":
+                    nickname = pair[1];
+                    break;
+
+                case "password":
+                    password = pair[1];
+                    break;
+
+                default: break;
+
+            }
+
+        }
+
+        User user;
+        try user = User.login(nickname, password);
+        catch (SamerionException exc) {
+
+            getLoginImpl(response, cast(string) exc.message);
+            return;
+
+        }
+
+
+        response.add(Cookie("session", user.startSession));
+        accountPage(user, response);
+
+    }
+
     @Post("register")
     void postRegister(ServerRequest request, ServerResponse response) {
 
@@ -140,29 +197,24 @@ final class Router {
         foreach (argument; request.body.splitter("&")) {
 
             // Get the pair
-            const pair = argument.findSplit("=");
-            if (!pair) continue;
+            const pair = queryPair(argument);
 
-            // Decode
-            const left = pair[0].decodeComponent.ifThrown("");
-            const right = pair[2].decodeComponent.ifThrown("");
-
-            switch (left) {
+            switch (pair[0]) {
 
                 case "nickname":
-                    user.nickname = right;
+                    user.nickname = pair[1];
                     break;
 
                 case "password":
-                    pass1 = right;
+                    pass1 = pair[1];
                     break;
 
                 case "password2":
-                    pass2 = right;
+                    pass2 = pair[1];
                     break;
 
                 case "access":
-                    user.accessKey = right;
+                    user.accessKey = pair[1];
                     break;
 
                 default: break;
@@ -204,7 +256,7 @@ final class Router {
 
         }
 
-        getAccount(request, response);
+        accountPage(user, response);
 
     }
 

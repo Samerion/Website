@@ -3,6 +3,9 @@ module samerion.website.database;
 import lighttp;
 import csprng.system;
 
+import passwd;
+import passwd.bcrypt;
+
 import std.ascii;
 import std.format;
 import std.traits;
@@ -41,6 +44,27 @@ struct User {
 
     /// Access key used to play Samerion.
     @uniqueIndex string accessKey;
+
+    /// Logins the user
+    /// Throws: `SamerionException` if registering failed. See message for details.
+    /// Returns: Session token generated for the user.
+    static User login(string nickname, string password) {
+
+        immutable errorMessage = "Invalid username or password.";
+
+        auto userN = database.findOneBy!User("nickname", nickname);
+
+        // Check if user exists
+        enforce!SamerionException(!userN.isNull, errorMessage);
+
+        auto user = userN.get;
+
+        // Check the password
+        enforce!SamerionException(password.canCryptTo(user.hash), errorMessage);
+
+        return user;
+
+    }
 
     /// Register this user.
     /// Throws: `SamerionException` if registering failed. See message for details.
@@ -86,7 +110,7 @@ struct User {
 
     /// Start a session for this user.
     /// Returns: Session token.
-    private string startSession() {
+    string startSession() {
 
         // Generate random 20 bytes
         const bytes = cast(ubyte[]) new CSPRNG().getBytes(20);
@@ -113,10 +137,10 @@ struct Session {
     @serial8 @PK long id;
 
     /// ID of the user.
-    @uniqueIndex long userID;
+    long userID;
 
     /// Access token for this ID.
-    string token;
+    @uniqueIndex string token;
 
 }
 
