@@ -1,14 +1,23 @@
 module samerion.website.database;
 
 import lighttp;
+import csprng.system;
 
+import std.ascii;
+import std.format;
 import std.traits;
 import std.typecons;
+import std.algorithm;
+import std.exception;
 
 import dpq.query;
+import dpq.result;
+import dpq.exception;
 import dpq.attributes;
 import dpq.connection;
 import dpq.serialisers.composite;
+
+import samerion.website.exception;
 
 /// Controller for the database connections.
 Connection database;
@@ -16,17 +25,84 @@ Connection database;
 @relation("users")
 struct User {
 
+    /// Keys allowed to register and play.
+    static immutable allowedKeys = [
+        "soaku-fun"
+    ];
+
     /// ID of the user.
     @serial8 @PK long id;
 
     /// User's nickname.
-    string nickname;
+    @uniqueIndex string nickname;
 
     /// User's Argon2 password hash.
     string hash;
 
-    /// If true, the player has access to play Samerion.
-    bool samerionAccess;
+    /// Access key used to play Samerion.
+    @uniqueIndex string accessKey;
+
+    /// Register this user.
+    /// Throws: `SamerionException` if registering failed. See message for details.
+    /// Returns: Session token generated for the user.
+    string register() {
+
+        enforce!SamerionException(
+            nickname.all!isAlphaNum,
+            "Nickname must only contain English letters and numbers."
+        );
+
+        enforce!SamerionException(
+            nickname.length >= 3
+            && nickname.length <= 20,
+            "Nickname must be between 3 and 20 characters long."
+        );
+
+        enforce!SamerionException(
+            allowedKeys.canFind(accessKey),
+            "Invalid access key."
+        );
+
+        assert(hash.length, "Password hash cannot be empty...");
+
+        // Insert the player into the database
+        Result result;
+        try result = database.insertR(this, "id");
+
+        // We're assuming dupes
+        catch (DPQException) {
+
+            throw new SamerionException("Either the username or the access key have already been used.");
+
+        }
+
+        assert(result.rows == 1);
+
+        id = result[0][0].as!long.get;
+
+        return startSession;
+
+    }
+
+    /// Start a session for this user.
+    /// Returns: Session token.
+    private string startSession() {
+
+        // Generate random 20 bytes
+        const bytes = cast(ubyte[]) new CSPRNG().getBytes(20);
+
+        // Format them in hex, prefix with user ID to ensure they will absolutely never overlap with another user.
+        // You'd need God's help to get overlapping tokens but with this, not even God himself will be able to crack my
+        // software.
+        const token = format!"%x%(%.2x%)"(id, bytes);
+
+        // Create a DB entry
+        const session = Session(0, id, token);
+        database.insert(session);
+
+        return token;
+
+    }
 
 }
 
@@ -37,7 +113,7 @@ struct Session {
     @serial8 @PK long id;
 
     /// ID of the user.
-    long userID;
+    @uniqueIndex long userID;
 
     /// Access token for this ID.
     string token;

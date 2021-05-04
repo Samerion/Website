@@ -137,10 +137,17 @@ input {
 input[type="submit"] {
 
     background: #ccc;
+    color: #000;
 
 }
 
-a {
+input[type="submit"]:hover {
+
+    background: #bbb;
+
+}
+
+a, .error {
 
     color: #c00;
 
