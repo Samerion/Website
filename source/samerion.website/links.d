@@ -24,7 +24,6 @@ alias menuLinks = AliasSeq!(
     link("Blog", "/blog"),
     socialMedia,
     link("GitHub", "https://github.com/Samerion"),
-    link("Account", "/account"),
 
 );
 
