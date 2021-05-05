@@ -3,7 +3,10 @@ module samerion.website.main;
 import lighttp;
 import dpq.connection;
 
+import std.conv;
 import std.file;
+import std.string;
+import std.algorithm;
 import std.stdio : writeln;
 
 import samerion.website.blog;
@@ -12,14 +15,31 @@ import samerion.website.home;
 import samerion.website.router;
 import samerion.website.database;
 
-void main() {
+void main(string[] argv) {
+
+    string escapeValue(string content) {
+
+        return content
+            .substitute(
+                `"`, `\"`,
+                `\`, `\\`,
+            )
+            .to!string
+            .format!`"%s"`;
+
+    }
 
     // Generate static content
     generateContent();
 
     // Connect to the database
     writeln("Connecting to the database...");
-    database = Connection(`host=127.0.0.1 dbname=samerion user=samerion password="&X,MwM;Y~hc4249=$9o'FaQ1?"`);
+
+    const params = format!"host=%s dbname=%s user=%s password=%s"(
+        "127.0.0.1", "samerion_website",
+        "samerion", escapeValue(argv[1])
+    );
+    database = Connection(params);
     database.ensureSchema!(User, Session);
 
     // Start Lighttp
