@@ -3,6 +3,7 @@ module samerion.website.router;
 import elemi;
 import lighttp;
 
+import std.string;
 import std.exception;
 import std.algorithm;
 
@@ -31,7 +32,22 @@ final class Router {
 
     void accountPage(User user, ServerResponse response) {
 
-        response.body = user;
+        Page page = {
+
+            title: "My account",
+            content: elems(
+
+                elem!"h1"("My account"),
+                elem!"p"(format!"Welcome, %s!"(user.nickname)),
+                elem!"p"(
+                    elem!("a", q{ href="/logout" })("Log out")
+                )
+
+            ),
+
+        };
+
+        response.body = page.render();
 
     }
 
@@ -145,6 +161,17 @@ final class Router {
 
     }
 
+    @Get("logout")
+    void getLogout(ServerRequest request, ServerResponse response) {
+
+        // Stop the session
+        stopSession(request);
+
+        // Redirect to login
+        getLogin(response);
+
+    }
+
     @Post("login") @Post("account")
     void postLogin(ServerRequest request, ServerResponse response) {
 
@@ -181,8 +208,7 @@ final class Router {
 
         }
 
-
-        response.add(Cookie("session", user.startSession));
+        user.startSession(response);
         accountPage(user, response);
 
     }
@@ -245,7 +271,7 @@ final class Router {
             user.hash = cast(string) pass1.crypt(Bcrypt.genSalt);
 
             // Try to register the user
-            response.add(Cookie("session", user.register));
+            user.register();
 
         }
 
@@ -256,6 +282,7 @@ final class Router {
 
         }
 
+        user.startSession(response);
         accountPage(user, response);
 
     }

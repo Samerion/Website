@@ -19,7 +19,7 @@ void main() {
 
     // Connect to the database
     writeln("Connecting to the database...");
-    database = Connection(`host=127.0.0.1 dbname=samerion_website user=samerion password="&X,MwM;Y~hc4249=$9o'FaQ1?"`);
+    database = Connection(`host=127.0.0.1 dbname=samerion user=samerion password="&X,MwM;Y~hc4249=$9o'FaQ1?"`);
     database.ensureSchema!(User, Session);
 
     // Start Lighttp

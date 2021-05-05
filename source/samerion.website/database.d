@@ -9,6 +9,7 @@ import passwd.bcrypt;
 import std.ascii;
 import std.format;
 import std.traits;
+import std.datetime;
 import std.typecons;
 import std.algorithm;
 import std.exception;
@@ -69,7 +70,7 @@ struct User {
     /// Register this user.
     /// Throws: `SamerionException` if registering failed. See message for details.
     /// Returns: Session token generated for the user.
-    string register() {
+    void register() {
 
         enforce!SamerionException(
             nickname.all!isAlphaNum,
@@ -104,8 +105,6 @@ struct User {
 
         id = result[0][0].as!long.get;
 
-        return startSession;
-
     }
 
     /// Start a session for this user.
@@ -125,6 +124,17 @@ struct User {
         database.insert(session);
 
         return token;
+
+    }
+
+    void startSession(ServerResponse response) {
+
+        Cookie cookie = {
+            name: "session",
+            value: startSession,
+            maxAge: 30.days.total!"seconds"
+        };
+        response.add(cookie);
 
     }
 
@@ -167,5 +177,16 @@ Nullable!User getUser(ServerRequest request) {
     }
 
     return Nullable!User.init;
+
+}
+
+/// Stop a session
+void stopSession(ServerRequest request) {
+
+    if (auto token = "session" in request.cookies) {
+
+        database.remove!Session("token = $1", *token);
+
+    }
 
 }
