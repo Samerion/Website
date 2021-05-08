@@ -15,5 +15,6 @@
 	"license": "BSL",
 	"name": "samerion-website",
 	"targetPath": "build",
-	"targetType": "executable"
+	"targetType": "executable",
+	"buildRequirements": ["allowWarnings"]
 }

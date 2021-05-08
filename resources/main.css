@@ -30,7 +30,7 @@ img {
 
 }
 
-h1, h2, h3, header a, input[type="submit"], .box {
+h1, h2, h3, header a, input[type="submit"], a.button, .box {
 
     font-family: almendra, ibm-plex-serif, serif, monospace, sans-serif;
     font-weight: bold;
@@ -112,17 +112,19 @@ main {
 
 }
 
-form {
+form, .thin {
 
     max-width: 400px;
     margin: 0 auto;
 
 }
 
-input {
+input, a.button {
 
     display: block;
     box-sizing: border-box;
+
+    text-decoration: none;
 
     width: 100%;
     padding: 5px 10px;
@@ -134,14 +136,16 @@ input {
 
 }
 
-input[type="submit"] {
+input[type="submit"], a.button {
+
+    text-align: center;
 
     background: #ccc;
     color: #000;
 
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover, a.button:hover {
 
     background: #bbb;
 

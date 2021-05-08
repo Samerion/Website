@@ -120,7 +120,7 @@ mixin template RouterLogin() {
         stopSession(request);
 
         // Redirect to login
-        getLogin(response);
+        response.redirect(StatusCodes.temporaryRedirect, "/login");
 
     }
 
@@ -130,19 +130,16 @@ mixin template RouterLogin() {
         string nickname, password;
 
         // Assemble the data
-        foreach (argument; request.body.splitter("&")) {
+        foreach (key, value; request.bodyEach) {
 
-            // Get the pair
-            const pair = queryPair(argument);
-
-            switch (pair[0]) {
+            switch (key) {
 
                 case "nickname":
-                    nickname = pair[1];
+                    nickname = value;
                     break;
 
                 case "password":
-                    password = pair[1];
+                    password = value;
                     break;
 
                 default: break;
@@ -172,27 +169,24 @@ mixin template RouterLogin() {
         User user;
 
         // Assemble the user
-        foreach (argument; request.body.splitter("&")) {
+        foreach (key, value; request.bodyEach) {
 
-            // Get the pair
-            const pair = queryPair(argument);
-
-            switch (pair[0]) {
+            switch (key) {
 
                 case "nickname":
-                    user.nickname = pair[1];
+                    user.nickname = value;
                     break;
 
                 case "password":
-                    pass1 = pair[1];
+                    pass1 = value;
                     break;
 
                 case "password2":
-                    pass2 = pair[1];
+                    pass2 = value;
                     break;
 
                 case "access":
-                    user.accessKey = pair[1];
+                    user.accessKey = value;
                     break;
 
                 default: break;

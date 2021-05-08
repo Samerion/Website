@@ -10,6 +10,7 @@ import std.algorithm;
 import passwd;
 import passwd.bcrypt;
 
+import samerion.website.auth;
 import samerion.website.html;
 import samerion.website.utils;
 import samerion.website.login;
@@ -18,6 +19,7 @@ import samerion.website.exception;
 
 final class Router {
 
+    mixin RouterAuth;
     mixin RouterLogin;
 
     @Get("account")
@@ -51,6 +53,39 @@ final class Router {
         };
 
         response.body = page.render();
+
+    }
+
+    void invalidToken(ServerResponse response) {
+
+        Page page = {
+
+            title: "Invalid token",
+            content: elem!("div", q{
+                class="thin"
+            })(
+
+                elem!"h2"("Invalid token"),
+
+                elem!"p"(
+                    longLine(
+                        "Something went wrong. It seems you are browsing the website from two tabs simultaneously.",
+                        "Load the previous page and try again."
+                    ),
+                ),
+
+                elem!("a", q{
+                    href=""
+                    class="button"
+                })(
+                    "Retry"
+                ),
+
+            ),
+
+        };
+
+        response.body = page.render;
 
     }
 

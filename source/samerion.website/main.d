@@ -42,6 +42,12 @@ void main(string[] argv) {
     database = Connection(params);
     database.ensureSchema!(User, Session);
 
+    ServerOptions options = {
+
+        handleExceptions: false,
+
+    };
+
     // Start Lighttp
     writeln("Starting server...");
     with (new Server) {

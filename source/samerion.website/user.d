@@ -21,6 +21,7 @@ import dpq.attributes;
 import dpq.connection;
 import dpq.serialisers.composite;
 
+import samerion.website.utils;
 import samerion.website.database;
 import samerion.website.exception;
 
@@ -43,6 +44,9 @@ struct User {
 
     /// Access key used to play Samerion.
     @uniqueIndex string accessKey;
+
+    /// Active request token.
+    string requestToken;
 
     /// Logins the user
     /// Throws: `SamerionException` if registering failed. See message for details.
@@ -110,13 +114,10 @@ struct User {
     /// Returns: Session token.
     string startSession() {
 
-        // Generate random 20 bytes
-        const bytes = cast(ubyte[]) new CSPRNG().getBytes(20);
-
-        // Format them in hex, prefix with user ID to ensure they will absolutely never overlap with another user.
+        // Create a 20 byte token, prefix it with user ID to ensure it will absolutely never overlap with another user.
         // You'd need God's help to get overlapping tokens but with this, not even God himself will be able to crack my
         // software.
-        const token = format!"%x%(%.2x%)"(id, bytes);
+        const token = format!"%x%s"(id, makeToken);
 
         // Create a DB entry
         const session = Session(0, id, token);
@@ -134,6 +135,70 @@ struct User {
             maxAge: 30.days.total!"seconds"
         };
         response.add(cookie);
+
+    }
+
+    string makeRequestToken() {
+
+        auto query = Query(database, `
+            UPDATE users
+            SET request_token=$1
+            WHERE id=$2
+        `);
+
+        // Make a new request token
+        requestToken = makeToken();
+
+        // Update the database
+        query.run(requestToken, id);
+
+        return requestToken;
+
+    }
+
+    /// Verify the given request token and generate a new one instantly.
+    bool verifyRequestToken(string vs) {
+
+        auto rt = requestToken;
+
+        // Make a new token
+        makeRequestToken();
+
+        // Compare the existing token
+        return rt == vs;
+
+    }
+
+    /// Verify the token found in the body of a request.
+    /// Params:
+    ///     request  = Request with the token to verify.
+    ///     tokenKey = Key in the request body to contain the token.
+    bool verifyRequestToken(ServerRequest request, string tokenKey = "token") {
+
+        // Search the body for the token
+        foreach (key, value; request.bodyEach) {
+
+            // Not the token
+            if (key != tokenKey) continue;
+
+            // Found it, check it
+            return verifyRequestToken(value);
+
+        }
+
+        // No token, never valid
+        return false;
+
+    }
+
+    /// Make a token.
+    private string makeToken(size_t bytes = 20) {
+
+        // Generate random 20 bytes
+        const data = cast(ubyte[]) new CSPRNG().getBytes(bytes);
+
+        // Convert to hex
+        return data.format!"%(%.2x%)";
 
     }
 
@@ -162,5 +227,25 @@ Nullable!User getUser(ServerRequest request) {
     }
 
     return Nullable!User.init;
+
+}
+
+/// Get the user for given request and redirect to /login if not logged in. Note the response is still nullable — it's
+/// necessary to return right after redirect.
+Nullable!User getUserRedirect(ServerRequest request, ServerResponse response) {
+
+    // TODO: exception for status codes, removing the need for Nullable
+
+    auto userN = request.getUser;
+
+    // Require login
+    if (userN.isNull) {
+
+        response.redirect(StatusCodes.temporaryRedirect, "/login");
+        return Nullable!User.init;
+
+    }
+
+    return userN;
 
 }
