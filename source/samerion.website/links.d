@@ -15,7 +15,12 @@ Element link(string text, string url) {
 alias socialMedia = AliasSeq!(
 
     link("Discord", "https://discord.gg/rfBZ5mX"),
-    link("Mastodon", "https://mstdn.social/@Soaku"),
+    elem!("a", q{
+        href="https://mstdn.social/@Soaku"
+        rel="me"
+    })(
+        "Mastodon"
+    ),
 
 );
 
