@@ -2,6 +2,7 @@ module samerion.website.router;
 
 import elemi;
 import lighttp;
+import libasync;
 
 import std.string;
 import std.exception;

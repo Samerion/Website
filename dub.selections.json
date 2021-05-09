@@ -9,6 +9,7 @@
 		"lighttp": "0.5.4",
 		"memutils": "1.0.4",
 		"passwd": "0.3.1",
+		"rcdata": "1.0.0-alpha.1",
 		"urld": "2.1.1",
 		"xbuffer": "1.0.0"
 	}

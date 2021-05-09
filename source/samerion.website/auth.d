@@ -1,5 +1,8 @@
 module samerion.website.auth;
 
+import libasync;
+import rcdata.bin;
+
 mixin template RouterAuth() {
 
     @Get("auth", `(\w+)`)
@@ -63,6 +66,13 @@ mixin template RouterAuth() {
 
         }
 
+        // Send info to the main server
+        auto connection = new AsyncTCPConnection(getThreadEventLoop);
+        auto handler = new AuthRequest(connection, target, user.id);
+
+        connection.host("127.0.0.1", 5484)
+            .run(&handler.handle);
+
         Page page = {
 
             title: "Access authorized",
@@ -83,5 +93,55 @@ mixin template RouterAuth() {
         response.body = page.render;
 
     }
+
+}
+
+class AuthRequest {
+
+    AsyncTCPConnection connection;
+    string target;
+    long id;
+
+    this(AsyncTCPConnection connection, string target, long id) {
+
+        this.connection = connection;
+        this.target     = target;
+        this.id         = id;
+
+    }
+
+    void handle(TCPEvent event) {
+
+        switch (event) {
+
+            case TCPEvent.CONNECT:
+
+                import std.array;
+
+                auto buffer = appender!(ubyte[]);
+
+                // Add data to the bin
+                rcbinSerializer(buffer)
+                    .get(id)
+                    .get(target);
+
+                connection.send(buffer[]);
+                connection.kill();
+
+                break;
+
+            case TCPEvent.ERROR:
+
+                import std.stdio;
+                stderr.writeln("auth failure: ", connection.error);
+
+                break;
+
+            default: break;
+
+        }
+
+    }
+
 
 }
