@@ -28,7 +28,7 @@ Page home = {
         section(
             "An open world for you to explore",
             longLine(
-                "Samerion happens in world where you're free to go wherever you want to. It's planned to be big and to",
+                "Samerion happens in a world where you're free to go wherever you want. It's planned to be big and to",
                 "grow constantly with each update."
             ),
 
@@ -49,7 +49,7 @@ Page home = {
         section(
             "Make your own...",
             longLine(
-                "Character, story, potions, items, more! From the basics to the details, Samerion gives you lots of",
+                "Character, story, potions, items, more! From the basics to the details; Samerion gives you lots of",
                 "different small choices, making every single game unique."
             ),
 
@@ -58,7 +58,7 @@ Page home = {
 
         section(
             "Join us",
-            "While there's still a long way until the beta, Samerion is steadily developed and isn't planned to stop!",
+            "While there's still a long way until the beta Samerion is steadily developed and isn't planned to stop!",
 
             socialMedia,
         ),
