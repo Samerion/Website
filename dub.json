@@ -2,22 +2,22 @@
 	"authors": [
 		"Soaku"
 	],
-	"configurations": [
-		{
-			"name": "generator",
-			"targetType": "executable",
-			"versions": [
-				"Samerion_Webgen"
-			]
-		}
+	"buildRequirements": [
+		"allowWarnings"
 	],
 	"copyright": "Copyright © 2021, Soaku",
 	"dependencies": {
 		"commonmark-d": "~>1.0.8",
-		"elemi": ">=1.0.2-beta <1.1.0-0"
+		"csprng": "~>1.1.2",
+		"dpq": "~>0.11.4",
+		"elemi": ">=1.0.2-beta <1.1.0-0",
+		"lighttp": "~>0.5.4",
+		"passwd": "~>0.3.1",
+		"rcdata": ">=1.0.0-alpha.1 <1.1.0-0"
 	},
 	"description": "Website for samerion.com",
 	"license": "BSL",
 	"name": "samerion-website",
-	"targetPath": "build"
+	"targetPath": "build",
+	"targetType": "executable"
 }

@@ -19,6 +19,12 @@ Page home = {
     layout: Layout.presentation,
     content: elems(
 
+        box(
+            "Now in priv dev",
+            "Got an access key?",
+            link("Login", "/account"),
+        ),
+
         mainSection(
             longLine(
                 "Samerion is a planned fantasy MMORPG with an experimental approach to a classic game.",

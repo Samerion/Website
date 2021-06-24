@@ -30,10 +30,15 @@ img {
 
 }
 
-h1, h2, h3, header a {
+h1, h2, h3, header a, input[type="submit"], a.button, .box {
 
     font-family: almendra, ibm-plex-serif, serif, monospace, sans-serif;
     font-weight: bold;
+
+}
+
+h1, h2, h3, header a {
+
     color: #c00;
 
 }
@@ -107,7 +112,46 @@ main {
 
 }
 
-a {
+form, .thin {
+
+    max-width: 400px;
+    margin: 0 auto;
+
+}
+
+input, a.button {
+
+    display: block;
+    box-sizing: border-box;
+
+    text-decoration: none;
+
+    width: 100%;
+    padding: 5px 10px;
+    border: 0;
+    border-radius: 0;
+    margin: 10px 0;
+
+    background: #eee;
+
+}
+
+input[type="submit"], a.button {
+
+    text-align: center;
+
+    background: #ccc;
+    color: #000;
+
+}
+
+input[type="submit"]:hover, a.button:hover {
+
+    background: #bbb;
+
+}
+
+a, .error {
 
     color: #c00;
 
@@ -150,6 +194,38 @@ a {
 
 }
 
+.box {
+
+    background: #ddd;
+
+    /*border: 1px #000 solid;*/
+    border-left: 3px #c00 solid;
+    padding: 22px 16px;
+
+}
+
+.box p {
+
+    font-size: 1.6em;
+    font-variant: small-caps;
+
+    margin: 0;
+    margin-bottom: 0.2em;
+
+}
+
+.box a {
+
+    color: #000;
+    text-decoration: none;
+
+    background: #ccc;
+
+    border: 2px #777 solid;
+    padding: 8px 16px;
+
+}
+
 .pagination {
 
     text-align: center;
@@ -182,5 +258,11 @@ a {
     font-size: 0.8em;
     color: #333;
     font-style: italic;
+
+}
+
+.right {
+
+    float: right;
 
 }

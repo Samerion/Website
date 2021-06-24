@@ -33,3 +33,24 @@ Element section(T...)(string title, string content, T include) {
     );
 
 }
+
+/// Place a box within the page.
+Element box(T...)(string title, string text, T include) {
+
+    return elem!("article", q{
+
+        class="box"
+
+    })(
+
+        elem!"p"(title),
+
+        elem!"span"(text),
+
+        elem!("span", q{ class="right" })(
+            include,
+        )
+
+    );
+
+}
