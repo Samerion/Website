@@ -29,9 +29,7 @@ import samerion.website.exception;
 struct User {
 
     /// Keys allowed to register and play.
-    static immutable allowedKeys = [
-        "soaku-fun"
-    ];
+    static immutable string[] allowedKeys;
 
     /// ID of the user.
     @serial8 @PK long id;
@@ -47,6 +45,16 @@ struct User {
 
     /// Active request token.
     string requestToken;
+
+    shared static this() {
+
+        import std.file;
+        import rcdata.json;
+
+        auto json = readText("./config.json").JSONParser();
+        allowedKeys = cast(immutable) json.getArray!string;
+
+    }
 
     /// Logins the user
     /// Throws: `SamerionException` if registering failed. See message for details.

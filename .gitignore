@@ -5,3 +5,4 @@ docs/
 build/
 public/
 *.lst
+config.json
