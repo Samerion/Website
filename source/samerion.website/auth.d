@@ -3,6 +3,8 @@ module samerion.website.auth;
 import libasync;
 import rcdata.bin;
 
+import samerion.website.user;
+
 mixin template RouterAuth() {
 
     @Get("auth", `(\w+)`)
@@ -68,10 +70,9 @@ mixin template RouterAuth() {
 
         // Send info to the main server
         auto connection = new AsyncTCPConnection(getThreadEventLoop);
-        auto handler = new AuthRequest(connection, target, user.id);
+        auto handler = new AuthRequest(connection, target, user);
 
-        connection.host("127.0.0.1", 5484)
-            .run(&handler.handle);
+        connection.host("127.0.0.1", 5484).run(&handler.handle);
 
         Page page = {
 
@@ -100,13 +101,13 @@ class AuthRequest {
 
     AsyncTCPConnection connection;
     string target;
-    long id;
+    User user;
 
-    this(AsyncTCPConnection connection, string target, long id) {
+    this(AsyncTCPConnection connection, string target, User user) {
 
         this.connection = connection;
         this.target     = target;
-        this.id         = id;
+        this.user       = user;
 
     }
 
@@ -122,7 +123,8 @@ class AuthRequest {
 
                 // Add data to the bin
                 rcbinSerializer(buffer)
-                    .get(id)
+                    .get(user.id)
+                    .get(user.nickname)
                     .get(target);
 
                 connection.send(buffer[]);
