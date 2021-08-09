@@ -162,6 +162,30 @@ mixin template RouterLogin() {
 
     }
 
+    /// Check if the password is correct, and if so, generate a bcrypt hash for it.
+    /// Throws: `SamerionException` if the password is incorrect.
+    string checkPassword(string pass1, string pass2) {
+
+        // Check the password
+        enforce!SamerionException(
+            pass1.length >= 6,
+            "Password must be at least 6 characters long."
+        );
+
+        enforce!SamerionException(
+            pass1.length <= 256,
+            "The password can be at most 256 characters long."
+        );
+
+        enforce!SamerionException(
+            pass1 == pass2,
+            "Given passwords don't match."
+        );
+
+        return cast(string) pass1.crypt(Bcrypt.genSalt);
+
+    }
+
     @Post("register")
     void postRegister(ServerRequest request, ServerResponse response) {
 
@@ -197,24 +221,8 @@ mixin template RouterLogin() {
 
         try {
 
-            // Check the password
-            enforce!SamerionException(
-                pass1.length >= 6,
-                "Password must be at least 6 characters long."
-            );
-
-            enforce!SamerionException(
-                pass1.length <= 256,
-                "The password can be at most 256 characters long."
-            );
-
-            enforce!SamerionException(
-                pass1 == pass2,
-                "Given passwords don't match."
-            );
-
             // Hash the password
-            user.hash = cast(string) pass1.crypt(Bcrypt.genSalt);
+            user.hash = checkPassword(pass1, pass2);
 
             // Try to register the user
             user.register();

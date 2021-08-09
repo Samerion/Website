@@ -37,7 +37,7 @@ struct User {
     /// User's nickname.
     @uniqueIndex string nickname;
 
-    /// User's Argon2 password hash.
+    /// User's Bcrypt password hash.
     string hash;
 
     /// Access key used to play Samerion.

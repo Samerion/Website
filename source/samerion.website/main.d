@@ -30,7 +30,7 @@ void main(string[] argv) {
     }
 
     // Generate static content
-    generateContent();
+    debug generateContent();
 
     // Connect to the database
     writeln("Connecting to the database...");
@@ -40,7 +40,7 @@ void main(string[] argv) {
         "samerion", escapeValue(argv[1])
     );
     database = Connection(params);
-    database.ensureSchema!(User, Session);
+    database.ensureSchema!(User, Session, PasswordReset);
 
     ServerOptions options = {
 

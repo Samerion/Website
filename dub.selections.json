@@ -3,13 +3,13 @@
 	"versions": {
 		"commonmark-d": "1.0.8",
 		"csprng": "1.1.2",
-		"dpq": "0.11.4",
+		"dpq": "0.11.5",
 		"elemi": "1.0.0",
 		"libasync": "0.8.6",
 		"lighttp": "0.5.4",
 		"memutils": "1.0.4",
 		"passwd": "0.3.1",
-		"rcdata": "1.0.0-alpha.1",
+		"rcdata": "1.0.0-alpha.2",
 		"urld": "2.1.1",
 		"xbuffer": "1.0.0"
 	}
