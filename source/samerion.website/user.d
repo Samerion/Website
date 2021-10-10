@@ -35,7 +35,8 @@ struct User {
     @serial8 @PK long id;
 
     /// User's nickname.
-    @uniqueIndex string nickname;
+    string nickname;
+    // Note: index is created manually in `main.d`
 
     /// User's Bcrypt password hash.
     string hash;
@@ -61,9 +62,11 @@ struct User {
     /// Returns: Session token generated for the user.
     static User login(string nickname, string password) {
 
+        try {
+
         immutable errorMessage = "Invalid username or password.";
 
-        auto userN = database.findOneBy!User("nickname", nickname);
+        auto userN = database.findOne!User("lower(nickname) = $1", nickname);
 
         // Check if user exists
         enforce!SamerionException(!userN.isNull, errorMessage);
@@ -74,6 +77,15 @@ struct User {
         enforce!SamerionException(password.canCryptTo(user.hash), errorMessage);
 
         return user;
+
+        }
+        catch (Exception exc) {
+
+            import std.stdio;
+            writeln(exc);
+            throw exc;
+
+        }
 
     }
 

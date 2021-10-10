@@ -1,13 +1,15 @@
 module samerion.website.main;
 
 import lighttp;
-import dpq.connection;
 
 import std.conv;
 import std.file;
 import std.string;
 import std.algorithm;
 import std.stdio : writeln;
+
+import dpq.query;
+import dpq.connection;
 
 import samerion.website.blog;
 import samerion.website.html;
@@ -41,6 +43,10 @@ void main(string[] argv) {
     );
     database = Connection(params);
     database.ensureSchema!(User, Session, PasswordReset);
+
+    // Create a case-insensitive index on the nickname table
+    Query(database, `DROP INDEX IF EXISTS users_nickname_fk_index`).run();
+    Query(database, `CREATE UNIQUE INDEX IF NOT EXISTS users_nickname_icmp ON users (LOWER("nickname"))`).run();
 
     ServerOptions options = {
 
