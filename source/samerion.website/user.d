@@ -62,8 +62,6 @@ struct User {
     /// Returns: Session token generated for the user.
     static User login(string nickname, string password) {
 
-        try {
-
         immutable errorMessage = "Invalid username or password.";
 
         auto userN = database.findOne!User("lower(nickname) = $1", nickname);
@@ -77,15 +75,6 @@ struct User {
         enforce!SamerionException(password.canCryptTo(user.hash), errorMessage);
 
         return user;
-
-        }
-        catch (Exception exc) {
-
-            import std.stdio;
-            writeln(exc);
-            throw exc;
-
-        }
 
     }
 
