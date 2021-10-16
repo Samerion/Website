@@ -40,6 +40,7 @@ h1, h2, h3, header a, input[type="submit"], a.button, .box {
 h1, h2, h3, header a {
 
     color: #c00;
+    margin: 0.6em 0;
 
 }
 
@@ -190,7 +191,7 @@ a, .error {
     padding: 20px;
     margin: 16px 0;
 
-    line-height: 0.8em;
+    line-height: 1.6em;
 
 }
 

@@ -64,7 +64,7 @@ struct User {
 
         immutable errorMessage = "Invalid username or password.";
 
-        auto userN = database.findOne!User("lower(nickname) = $1", nickname);
+        auto userN = database.findOne!User("lower(nickname) = lower($1)", nickname);
 
         // Check if user exists
         enforce!SamerionException(!userN.isNull, errorMessage);
