@@ -50,6 +50,7 @@ Page home = {
                 "actions, forcing you to think quickly and plan your next moves before your turn."
             ),
             link("Blog: Combat", "/blog/2021-03-16-combat"),
+            link("Blog: Team combat", "/blog/2021-10-17-team-combat"),
         ),
 
         section(
