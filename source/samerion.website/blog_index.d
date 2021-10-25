@@ -21,7 +21,7 @@ immutable blogPosts = [
     BlogPost.make("2021-03-16", "combat", "Combat, pt. 1: turns and queues"),
     BlogPost.make("2021-03-04", "monetization", "Monetization of Samerion"),
     BlogPost.make("2021-01-13", "dialogue", "Role-play: The dialogue system"),
-    BlogPost.make("2020-11-07", "mirrors", "World Mirrors — Parallel worlds in Samerion"),
+    BlogPost.make("2020-11-07", "mirrors", "World Shards — Parallel worlds in Samerion"),
 
 ];
 
